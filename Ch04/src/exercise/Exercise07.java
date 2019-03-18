@@ -17,7 +17,7 @@ public class Exercise07 {
 			System.out.print("선택 > ");
 			
 			int num = scan.nextInt();
-
+			
 			if (num == 1) {
 				System.out.print("예금액 > ");
 				int money = scan.nextInt();
