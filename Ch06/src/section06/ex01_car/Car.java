@@ -1,4 +1,4 @@
-package section06;
+package section06.ex01_car;
 
 public class Car {
 	String company = "현대자동차";

@@ -1,4 +1,4 @@
-package section06;
+package section06.ex01_car;
 
 public class CarExample {
 
