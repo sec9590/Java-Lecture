@@ -1,7 +1,7 @@
 package section07.car_array;
 
-import section07.car.HankookTire;
-import section07.car.KumhoTire;
+import section07.car_array.HankookTire;
+import section07.car_array.KumhoTire;
 
 public class CarExample {
 	public static void main(String[] args) {

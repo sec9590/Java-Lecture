@@ -1,6 +1,6 @@
 package section07.car_array;
 
-import section07.car.Tire;
+import section07.car_array.Tire;
 
 public class Car {
 	Tire[] tires = {
