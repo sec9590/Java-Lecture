@@ -22,7 +22,7 @@ public class Student {
 		// TODO Auto-generated method stub
 		if(obj instanceof Student) {
 			Student student = (Student) obj;
-			if(studentNum.equals(student.studentNum)) {
+			if(studentNum.equals(student.getStudentNum())) {
 				return true;
 			}
 		}
