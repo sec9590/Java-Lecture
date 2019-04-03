@@ -1,4 +1,4 @@
-package basic02;
+package exercise02;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,7 +8,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SongDAO { // 연결
+import exercise01.MemberDTO;
+
+
+public class BbsDAO {
 	private Connection conn;
 
 	private static final String USERNAME = "javauser";
@@ -16,7 +19,7 @@ public class SongDAO { // 연결
 	private static final String URL = "jdbc:mysql://localhost:3306/world?verifyServerCertificate=false&useSSL=false";
 
 	// database에 대한 커넥션을 생성
-	public SongDAO() {
+	public BbsDAO() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
@@ -24,129 +27,24 @@ public class SongDAO { // 연결
 			ex.printStackTrace();
 		}
 	}
-
-	// 다른 method에서 DB 연결과정 생략 가능
-
-	// insert 메소드
-	public void insertSong(SongDTO song) {
-		String query = "insert into song(title, lyrics) values (?, ?);";
+	
+	public List<BbsDTO> selectCondition(String query) {
+		// String query = "select * from Bbs;";
 		PreparedStatement pStmt = null;
-
-		try {
-			pStmt = conn.prepareStatement(query);
-
-			pStmt.setString(1, song.getTitle()); // 첫번째 빈칸에 getTitle
-			pStmt.setString(2, song.getLyrics()); // 두번째 빈칸에 getLyrics
-
-			pStmt.executeUpdate();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (pStmt != null && !pStmt.isClosed())
-					pStmt.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			}
-		}
-	}
-
-	// update 문
-	public void updateSong(SongDTO song) {
-		String query = "update song set title = ?, lyrics = ? where _id = ?;";
-		PreparedStatement pStmt = null;
-
-		try {
-			pStmt = conn.prepareStatement(query);
-
-			pStmt.setString(1, song.getTitle()); // 첫번째 빈칸에 getTitle
-			pStmt.setString(2, song.getLyrics()); // 두번째 빈칸에 getLyrics
-			pStmt.setInt(3, song.getId());
-
-			pStmt.executeUpdate();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (pStmt != null && !pStmt.isClosed())
-					pStmt.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			}
-		}
-	}
-
-	// delete 문
-	public void deleteSong(SongDTO song) {
-		String query = "delete from song where _id = ?";
-		PreparedStatement pStmt = null;
-
-		try {
-			pStmt = conn.prepareStatement(query);
-
-			pStmt.setInt(1, song.getId());
-
-			pStmt.executeUpdate();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (pStmt != null && !pStmt.isClosed())
-					pStmt.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			}
-		}
-	}
-
-	// select 메소드
-	public SongDTO selectOne(int id) {
-		String query = "SELECT * FROM song where _id=?;";
-		PreparedStatement pStmt = null;
-		SongDTO song = new SongDTO(); // 빈 생성자 객체 생성
-
-		try {
-			pStmt = conn.prepareStatement(query);
-			pStmt.setInt(1, id); // 첫번째 빈칸에 _id = id;
-			ResultSet rs = pStmt.executeQuery();
-
-			while (rs.next()) {
-				song.setId(rs.getInt("_id")); // rs.getInt(1)
-				song.setTitle(rs.getString("title")); // rs.getString(2)
-				song.setLyrics(rs.getString("lyrics")); // rs.getString(3)
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (pStmt != null && !pStmt.isClosed())
-					pStmt.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			}
-		}
-		return song;
-	}
-
-	// selectAll
-	public List<SongDTO> selectAll() {
-		String query = "select * from song;";
-		PreparedStatement pStmt = null;
-		List<SongDTO> list = new ArrayList<SongDTO>();
+		List<BbsDTO> list = new ArrayList<BbsDTO>();
 		try {
 			pStmt = conn.prepareStatement(query);
 			ResultSet rs = pStmt.executeQuery();
 
 			while (rs.next()) {
-				SongDTO song = new SongDTO();
-				song.setId(rs.getInt("_id")); // rs.getInt(1)
-				song.setTitle(rs.getString("title")); // rs.getString(2)
-				song.setLyrics(rs.getString("lyrics")); // rs.getString(3)
-				list.add(song);
+				BbsDTO Bbs = new BbsDTO();
+				Bbs.setId(rs.getInt("id"));
+				Bbs.setMemberId(rs.getInt("memberid"));
+				Bbs.setTitle(rs.getString("title"));
+				Bbs.setDate(rs.getString("date"));
+				Bbs.setContent(rs.getString("content"));
+				
+				list.add(Bbs);
 			}
 
 		} catch (Exception e) {
@@ -160,15 +58,121 @@ public class SongDAO { // 연결
 			}
 		}
 		return list;
-
 	}
+	
+	public List<BbsDTO> selectAll() {
+		String sql = "select id, memberid, title, date, content from bbs order by id desc;";
+		List<BbsDTO> Bbs = selectCondition(sql);
+		return Bbs;
+	}
+	
+	public  List<BbsDTO> selectMemberId(int memberid) {
+		String sql = "select bbs.title, member.name, bbs.date, bbs.content from bbs inner join member on member.id = bbs.memberid where memberid = \"" + memberid + "\";";
+		List<BbsDTO> Bbs = selectCondition(sql);
+		return Bbs;
+	} 
+	
+	public BbsDTO selectOne(int memberid) {
+		String query ="select * FROM Bbs where memberid=?;";
+		PreparedStatement pStmt = null;
+		BbsDTO Bbs = new BbsDTO();
 
-	public void close() {
 		try {
-			if (conn != null && !conn.isClosed())
-				conn.close();
-		} catch (SQLException e) {
+			pStmt = conn.prepareStatement(query);
+			pStmt.setInt(1, memberid); 
+			ResultSet rs = pStmt.executeQuery();
+
+			while (rs.next()) {
+				Bbs.setId(rs.getInt("id"));
+				Bbs.setMemberId(rs.getInt("memberid"));
+				Bbs.setTitle(rs.getString("title"));
+				Bbs.setDate(rs.getString("date"));
+				Bbs.setContent(rs.getString("content"));
+			}
+
+		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (pStmt != null && !pStmt.isClosed())
+					pStmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		return Bbs;
+	}
+	
+	
+	public void insertBbs(BbsDTO Bbs) {
+		String query = "insert into bbs(memberid, title, content) values (?, ?, ?);";
+		PreparedStatement pStmt = null;
+
+		try {
+			pStmt = conn.prepareStatement(query);
+			pStmt.setInt(1, Bbs.getMemberId());
+			pStmt.setString(2, Bbs.getTitle());
+			pStmt.setString(3, Bbs.getContent());
+
+			pStmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pStmt != null && !pStmt.isClosed())
+					pStmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
 		}
 	}
+	
+	public void updateBbs(BbsDTO Bbs) {
+		String query = "update bbs set title=?, content=? where memberid=?;";
+		PreparedStatement pStmt = null;
+
+		try {
+			pStmt = conn.prepareStatement(query);
+
+			pStmt.setString(1, Bbs.getTitle());
+			pStmt.setString(2, Bbs.getContent());
+
+			pStmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pStmt != null && !pStmt.isClosed())
+					pStmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteBbs(BbsDTO Bbs) {
+		String query = "delete from bbs where memberid = ?";
+		PreparedStatement pStmt = null;
+
+		try {
+			pStmt = conn.prepareStatement(query);
+
+			pStmt.setInt(1, Bbs.getMemberId());
+
+			pStmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pStmt != null && !pStmt.isClosed())
+					pStmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+	}
+
 }

@@ -1,6 +1,8 @@
 package basic02;
 
-public class SongTest {
+import java.util.List;
+
+public class SongMain {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -30,6 +32,12 @@ public class SongTest {
 		//select 문
 		/*SongDTO sDto = sDao.selectOne(117);
 		System.out.println(sDto.toString());*/
+		
+		//selectAll 문
+		List<SongDTO> songList = sDao.selectAll();
+		for(SongDTO song : songList) {
+			System.out.println(song.toString());
+		}		
 		
 		sDao.close(); //DB 닫기
 
