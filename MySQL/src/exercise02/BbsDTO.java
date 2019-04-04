@@ -7,17 +7,18 @@ public class BbsDTO {
 	private String title;
 	private String date;
 	private String content;
+	private String name;
 
 	public BbsDTO() {
 		super();
 	}
 
-	public BbsDTO(int memberId, String title, String date, String content) {
-		super();
-		this.memberId = memberId;
-		this.title = title;
-		this.date = date;
-		this.content = content;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getId() {
@@ -62,8 +63,7 @@ public class BbsDTO {
 
 	@Override
 	public String toString() {
-		return "BbsDTO [id=" + id + ", memberId=" + memberId + ", title=" + title + ", date=" + date + ", content="
-				+ content + "]";
+		return "BbsDTO [id = " + id + ", title = " + title + ", name = " + name + ", date = " + date + "]";
 	}
 
 }
