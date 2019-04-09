@@ -1,6 +1,6 @@
 package practice05_190408.ex02;
 
-public class Member implements Comparable<Member> {
+public class Member implements Comparable {
 
 	private String name;
 	private String id;
@@ -48,11 +48,14 @@ public class Member implements Comparable<Member> {
 	}
 
 	@Override
-	public int compareTo(Member m) {
-		String age1 = String.valueOf(this.getAge());
-		String age2 = String.valueOf(m.getAge());
-		int result = age1.compareTo(age2);
-
-		return result;
+	public int compareTo(Object o) {
+		Member m = (Member)o;
+		if (this.age > m.age)
+			return 1;
+		if (this.age < m.age)
+			return -1;
+		return 0;
 	}
+
+	
 }

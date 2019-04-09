@@ -62,6 +62,7 @@ public class Dartgame {
 				}
 			}
 		}
+		
 		int finalresult = result[0] + result[1] + result[2];
 		return finalresult;
 	}
