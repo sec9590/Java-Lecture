@@ -1,4 +1,4 @@
-package exercise_ex08;
+package exercise.ex08;
 
 public class Student {
 	public int StudentNum;

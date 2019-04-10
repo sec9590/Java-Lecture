@@ -1,4 +1,4 @@
-package exercise_ex07;
+package exercise.ex07;
 
 public class Board {
 	private String title;

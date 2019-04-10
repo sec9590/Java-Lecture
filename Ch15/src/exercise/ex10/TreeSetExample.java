@@ -1,4 +1,4 @@
-package exercise_ex10;
+package exercise.ex10;
 
 import java.util.TreeSet;
 
