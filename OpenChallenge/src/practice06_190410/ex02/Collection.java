@@ -12,46 +12,40 @@ public class Collection {
 		String names[] = text.split(",");
 		int kimcount = 0;
 		int leecount = 0;
+		int jaeyoung = 0;
 
 		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < names.length; i++) {
 			list.add(names[i]);
 		}
 
-		// 1번
+		// 1, 2번
 		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i).contains("김")) {
 				kimcount++;
 			}
-		}
-		System.out.println("중복을 포함한 김씨 명수 : " + kimcount + "명");
-
-		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i).contains("이")) {
 				leecount++;
 			}
-		}
-		System.out.println("중복을 포함한 이씨 명수 : " + leecount + "명");
-
-		// 2번
-		int jaeyoung = 0;
-		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i).contains("이재영")) {
 				jaeyoung++;
-			}
+			}			
 		}
+		
+		System.out.println("중복을 포함한 김씨 명수 : " + kimcount + "명");
+		System.out.println("중복을 포함한 이씨 명수 : " + leecount + "명");
 		System.out.println("이재영이라는 이름은 몇 번 중복 : " + jaeyoung + "번");
 
 		// 3번
-		Set<String> set = new HashSet<String>(list);
 		System.out.print("중복 제거 이름 : ");
+		Set<String> set = new HashSet<String>(list);
 		for (String str : set) {
 			System.out.print(str + " ");
 		}
 
 		// 4번
-		TreeSet<String> treeset = new TreeSet<String>(set);
 		System.out.print("\n중복 제거 이름(오름차순) : ");
+		TreeSet<String> treeset = new TreeSet<String>(set);
 		for (String str : treeset) {
 			System.out.print(str + " ");
 		}
