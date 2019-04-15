@@ -1,0 +1,2 @@
+﻿apple,apple,grape.apple,banana,banana apple grape,pineapple.grape,pineapple,banana,strawberry,melon,melon,peach,peach,strawberry,apple apple apple
+grape,grape,peach,mango,pear,mango,orange,pear,pear,watermelon,strawberry,strawberry,cherry,cherry,cherry,cherry,cherry,cherry,cherry,cherry,tomato,peach,peach,peach,peach,peach,peach,peach, 

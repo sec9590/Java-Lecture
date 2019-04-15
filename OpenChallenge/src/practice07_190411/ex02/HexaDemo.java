@@ -26,14 +26,17 @@ public class HexaDemo {
 					System.out.printf("%02X ", buf[i]);
 				}
 
-				for (int i = 0; i <= (16 - data); i++)
-					System.out.printf("   ");
+				for (int i = 0; i <= (16 - data); i++) {
+					if (data < 9)
+						System.out.print(" ");
+					System.out.print("   ");					
+				}
 
 				for (int i = 0; i < data; i++) {
 					if (buf[i] >= 32 && buf[i] <= 126)
 						System.out.printf("%c", buf[i]);
 					else
-						System.out.printf(".");
+						System.out.print(".");
 				}
 
 				count += 16;
