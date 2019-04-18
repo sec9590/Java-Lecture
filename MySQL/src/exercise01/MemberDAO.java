@@ -26,13 +26,13 @@ public class MemberDAO {
 	}
 
 	public MemberDTO selectOne(int id) {
-		String query ="select * FROM member where id=?;";
+		String query = "select * FROM member where id=?;";
 		PreparedStatement pStmt = null;
 		MemberDTO member = new MemberDTO();
 
 		try {
 			pStmt = conn.prepareStatement(query);
-			pStmt.setInt(1, id); 
+			pStmt.setInt(1, id);
 			ResultSet rs = pStmt.executeQuery();
 
 			while (rs.next()) {
@@ -40,7 +40,7 @@ public class MemberDAO {
 				member.setPassword(rs.getString("password"));
 				member.setName(rs.getString("name"));
 				member.setBirthday(rs.getString("birthday"));
-				member.setAddress(rs.getString("address"));	
+				member.setAddress(rs.getString("address"));
 			}
 
 		} catch (Exception e) {
@@ -55,18 +55,18 @@ public class MemberDAO {
 		}
 		return member;
 	}
-	
+
 	public List<MemberDTO> selectAll() {
 		String sql = "select * from member order by id desc;";
 		List<MemberDTO> member = selectCondition(sql);
 		return member;
 	}
-	
-	public  List<MemberDTO> selectMemberName(String name) {
+
+	public List<MemberDTO> selectMemberName(String name) {
 		String sql = "select * from member where name = \"" + name + "\";";
 		List<MemberDTO> member = selectCondition(sql);
 		return member;
-	} 
+	}
 
 	// selectCondition
 	public List<MemberDTO> selectCondition(String query) {
@@ -83,8 +83,8 @@ public class MemberDAO {
 				member.setPassword(rs.getString("password"));
 				member.setName(rs.getString("name"));
 				member.setBirthday(rs.getString("birthday"));
-				member.setAddress(rs.getString("address"));			
-				
+				member.setAddress(rs.getString("address"));
+
 				list.add(member);
 			}
 
@@ -168,6 +168,37 @@ public class MemberDAO {
 
 			pStmt.executeUpdate();
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pStmt != null && !pStmt.isClosed())
+					pStmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+	}
+
+	public void initPassword() {
+		List<MemberDTO> mList = selectAll();
+		for (MemberDTO member : mList) {
+			int id = member.getId();
+			String plainPassword = member.getPassword();
+			String hashedPassword = BCrypt.hashpw(plainPassword, BCrypt.gensalt());
+			updatePassword(id, hashedPassword);
+		}
+	}
+
+	public void updatePassword(int id, String hashed) {
+		String query = "update member set hashed=? where id=?;";
+		PreparedStatement pStmt = null;
+		try {
+			pStmt = conn.prepareStatement(query);
+			pStmt.setString(1, hashed);
+			pStmt.setInt(2, id);
+
+			pStmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

@@ -38,7 +38,7 @@ public class Word implements Comparable<Word> {
 			return 1;
 		else if (count > w.count)
 			return -1;
-		return name.compareTo(w.name);
+		return name.compareTo(w.name); //중복체크
 	}
 
 }
