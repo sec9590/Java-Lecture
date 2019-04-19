@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MemberDAO {
+	public static final int ID_PASSWORD_MATCH = 1;
+	public static final int ID_DOES_NOT_EXIST = 2;
+	public static final int PASSWORD_IS_WRONG = 3;
+	public static final int DATABASE_ERROR = -1;
+	
 	private Connection conn;
 
 	private static final String USERNAME = "javauser";
@@ -209,6 +214,37 @@ public class MemberDAO {
 				se.printStackTrace();
 			}
 		}
+	}
+	
+	public int verifyIdPassword(int id, String password) {			
+		String query = "select hashed from member where id=?;";
+		PreparedStatement pStmt = null;
+		MemberDTO member = new MemberDTO();
+		String hashedPassword = "";
+		try {
+			pStmt = conn.prepareStatement(query);
+			pStmt.setInt(1, id); 
+			ResultSet rs = pStmt.executeQuery();
+
+			while (rs.next()) {
+				hashedPassword = rs.getString(1);
+				if (BCrypt.checkpw(password, hashedPassword))
+					return ID_PASSWORD_MATCH;
+				else
+					return PASSWORD_IS_WRONG;
+			}
+			return ID_DOES_NOT_EXIST;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pStmt != null && !pStmt.isClosed())
+					pStmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		return DATABASE_ERROR;
 	}
 
 	public void close() {

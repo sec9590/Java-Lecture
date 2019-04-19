@@ -93,4 +93,28 @@ public class MemberTest {
 		if (no > 0)
 			System.out.println("id가 존재하지 않습니다.");
 	}
+	
+	public static void login() {
+		System.out.print("ID > ");
+		int id = Integer.parseInt(scan.nextLine());
+		System.out.print("패스워드 > ");
+		String password = scan.nextLine();	
+		int result = mDao.verifyIdPassword(id, password);
+		
+		switch (result) {
+		case MemberDAO.ID_PASSWORD_MATCH:
+			System.out.println("로그인 성공");
+			break;
+		case MemberDAO.ID_DOES_NOT_EXIST:
+			System.out.println("Id가 존재하지 않습니다.");
+			break;
+		case MemberDAO.PASSWORD_IS_WRONG:
+			System.out.println("Password가 틀렸습니다.");
+			break;
+		case MemberDAO.DATABASE_ERROR:
+			System.out.println("데이터베이스 오류.");
+			break;
+		}
+		
+	}
 }

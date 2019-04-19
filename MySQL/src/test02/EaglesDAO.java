@@ -1,4 +1,4 @@
-package basic03;
+package test02;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -58,11 +58,6 @@ public class EaglesDAO {
 			}
 		}
 		return player;
-	}
-	public List<EaglesDTO> selectOnePlayer(int back_no) {
-		String sql = "select * from eagles where back_no = \"" + back_no + "\";";
-		List<EaglesDTO> playerlist = selectCondition(sql);
-		return playerlist;
 	}
 
 	public List<EaglesDTO> selectPlayerByposition(String position) {
@@ -213,5 +208,4 @@ public class EaglesDAO {
 			e.printStackTrace();
 		}
 	}
-
 }

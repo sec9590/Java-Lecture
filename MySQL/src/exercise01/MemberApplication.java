@@ -39,7 +39,7 @@ public class MemberApplication {
 				break;
 
 			case 7:
-				MemberTest.isValid();
+				MemberTest.login();
 				break;
 			}
 		}

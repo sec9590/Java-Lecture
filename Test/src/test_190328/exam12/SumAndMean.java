@@ -1,4 +1,4 @@
-package exam12;
+package test_190328.exam12;
 
 public class SumAndMean {
 
